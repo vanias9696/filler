@@ -10,9 +10,9 @@
 #                                                                              #
 #******************************************************************************#
 
-NAME	=	filler.ismus
+NAME	=	ismus.filler
 
-FUNC	=	first.c
+FUNC	=	first.c move_to_player.c
 
 
 OBJ		=	$(FUNC:.c=.o)

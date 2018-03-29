@@ -1,37 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   filler.h                                           :+:      :+:    :+:   */
+/*   move_to_player.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismus <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/22 12:00:20 by ismus             #+#    #+#             */
-/*   Updated: 2018/03/22 12:00:20 by ismus            ###   ########.fr       */
+/*   Created: 2018/03/29 14:37:59 by ismus             #+#    #+#             */
+/*   Updated: 2018/03/29 14:38:00 by ismus            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILLER_H
-# define FILLER_H
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include "new_lib/libft.h"
-# include "filler.h"
+#include "filler.h"
 
-typedef struct		s_map
+void	move_to_pl(t_map *map)
 {
-	char			sym;
-	int				adrX;
-	int				adrN;
-	char			nsym;
-	int				nadrX;
-	int				nadrN;
-	char			**map;
-	char			**fig;
-	int				map_x;
-	int				map_n;
-	int				fig_x;
-	int				fig_n;
-}					t_map;
-
-#endif
+	
+}
