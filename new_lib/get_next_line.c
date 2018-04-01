@@ -3,97 +3,106 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ismus <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: cfatrane <cfatrane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/07 15:58:43 by ismus             #+#    #+#             */
-/*   Updated: 2017/12/07 15:58:44 by ismus            ###   ########.fr       */
+/*   Created: 2016/11/21 13:51:49 by cfatrane          #+#    #+#             */
+/*   Updated: 2018/04/01 16:06:17 by ismus            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
 
-static t_list	*correct_buf(int fd, t_list **list)
+static void		ft_list_add_last(t_gnl **save, t_gnl *elem)
 {
-	t_list			*temp;
+	t_gnl *list;
 
-	temp = *list;
-	while (temp)
+	list = *save;
+	while (list->next != NULL)
+		list = list->next;
+	list->next = elem;
+}
+
+static t_gnl	*ft_create_list(int fd)
+{
+	t_gnl *list;
+
+	if (!(list = (t_gnl*)malloc(sizeof(*list))))
+		return (NULL);
+	list->fd = fd;
+	list->tempo = ft_strnew(0);
+	list->text = NULL;
+	list->next = NULL;
+	return (list);
+}
+
+static t_gnl	*ft_check_fd(t_gnl *save, int fd)
+{
+	t_gnl *tmp;
+	t_gnl *d_list;
+
+	tmp = NULL;
+	d_list = save;
+	while (d_list)
 	{
-		if ((unsigned int)(temp->content_size) == (unsigned int)fd)
-			return (temp);
-		temp = temp->next;
+		if (d_list->fd == fd)
+			return (d_list);
+		if (!(d_list->next))
+		{
+			tmp = ft_create_list(fd);
+			ft_list_add_last(&d_list, tmp);
+			return (tmp);
+		}
+		d_list = d_list->next;
 	}
-	temp = ft_lstnew(0, fd);
-	temp->content_size = fd;
-	ft_lstadd(list, temp);
-	if (!(temp->content = malloc(BUFF_SIZE + 1)))
+	return (NULL);
+}
+
+static int		ft_check(char *save, char **line)
+{
+	char *fin;
+
+	if (!save)
 		return (0);
-	ft_bzero(temp->content, BUFF_SIZE);
-	return (temp);
+	fin = ft_strchr(save, '\n');
+	if (fin != NULL)
+	{
+		*fin = '\0';
+		*line = ft_strdup(save);
+		ft_strncpy(save, &fin[1], ft_strlen(&fin[1]) + 1);
+		return (1);
+	}
+	else if (ft_strlen(save) > 0)
+	{
+		*line = ft_strdup(save);
+		*save = '\0';
+		return (1);
+	}
+	return (0);
 }
 
-static int		ft_free(t_list *temp, int nread, char **line)
+int			get_next_line(const int fd, char **line)
 {
-	int		numbn;
-	int		l;
-	int		j;
-	int		n;
-	char	*str;
+	char buf[BUFF_SIZE + 1];
+	static t_gnl*save = NULL;
+	t_gnl *tmp;
+	int ret;
 
-	numbn = ft_strlen(*line);
-	if (nread == 0 && ft_strlen(temp->content) < 1)
-		return (0);
-	n = numbn + 1;
-	l = ft_strlen(temp->content);
-	j = 0;
-	str = temp->content;
-	while (j < l - n && j < l)
-	{
-		str[j] = str[j + n];
-		j++;
-	}
-	while (j < l)
-	{
-		str[j] = '\0';
-		j++;
-	}
-	return (1);
-}
-
-static int		fill_list(t_list *temp, char **line)
-{
-	int	numbn;
-
-	if ((numbn = ft_while_not_n(temp->content, '\n')) && numbn < 0)
-		numbn = ft_strlen(temp->content);
-	if (!(*line = (char *)malloc(numbn + 1)))
+	if (!(save))
+		save = ft_create_list(fd);
+	if (fd == -1 || line == NULL || BUFF_SIZE <= 0)
 		return (-1);
-	*line = ft_strncpy(*line, temp->content, numbn);
-	line[0][numbn] = '\0';
-	return (1);
-}
-
-int				get_next_line(const int fd, char **line)
-{
-	static t_list	*list;
-	t_list			*temp;
-	int				nread;
-	char			buf[BUFF_SIZE + 1];
-	char			*free_cont;
-
-	if (fd < 0 || line == NULL || read(fd, &buf, 0) < 0)
-		return (-1);
-	CHECKERROR((temp = correct_buf(fd, &list)));
-	while ((nread = read(fd, &buf, BUFF_SIZE)) && nread != 0)
+	tmp = ft_check_fd(save, fd);
+	while (!(ft_strchr(tmp->tempo, '\n')))
 	{
-		buf[nread] = '\0';
-		free_cont = temp->content;
-		CHECKERROR((temp->content = ft_strjoin(temp->content, buf)));
-		free(free_cont);
-		if (ft_strchr(buf, '\n'))
-			break ;
+		ret = read(fd, buf, BUFF_SIZE);
+		if (ret == -1)
+			return (-1);
+		if (ret == 0)
+			return (ft_check(tmp->text, line));
+		buf[ret] = '\0';
+		tmp->text = ft_strjoin(tmp->tempo, buf);
+		free(tmp->tempo);
+		tmp->tempo = tmp->text;
 	}
-	if (fill_list(temp, line) < 0)
-		return (-1);
-	return (ft_free(temp, nread, line) == 0 ? 0 : 1);
+	return (ft_check(tmp->text, line));
 }

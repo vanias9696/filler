@@ -16,7 +16,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include "ft_printf/ft_printf.h"
-# include "get_next_line.h"
+# define BUFF_SIZE 50000
+//# include "get_next_line.h"
 
 typedef struct		s_list
 {
@@ -259,6 +260,14 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 /*
 **new list, which has f(lst)
 */
+typedef struct		s_gnl
+{
+	char			*text;
+	char			*tempo;
+	struct s_gnl	*next;
+	int				fd;
+}					t_gnl;
+
 int					ft_while_not_n(char *str, char n);
 char				*ft_by_n(int n, char c);
 int					ft_copy_unt(char *str1, char *str2, char c);
@@ -266,5 +275,7 @@ void				ft_del_first_n(char *str, int n);
 char				*ft_strcjoin(char *s, char c, int n);
 char				*ft_itoa_base(intmax_t n, int base);
 char				*ft_utoa_base(uintmax_t n, int base);
+int					get_next_line(const int fd, char **line);
+int					len_num(int n);
 
 #endif

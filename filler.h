@@ -21,17 +21,26 @@
 typedef struct		s_map
 {
 	char			sym;
-	int				adrX;
+	int				adrX;//перший символ
 	int				adrN;
 	char			nsym;
-	int				nadrX;
+	int				nadrX;//не мій перший символ
 	int				nadrN;
-	char			**map;
-	char			**fig;
-	int				map_x;
+	char			**map;// карта
+	char			**fig;//нова фігура
+	int				map_x;//розмір карти
 	int				map_n;
-	int				fig_x;
+	int				fig_x;//
 	int				fig_n;
+	int				horiz;
+	int				vertic;
 }					t_map;
 
+void				first_fig(t_map *map);
+void				output_pr(int x, int y, int fd);
+void				free_map_fig(char **map, char **fig);
+int					get_map_fig(t_map *map);
+void				adr_xn(t_map *map);
 #endif
+
+
