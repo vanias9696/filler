@@ -12,8 +12,7 @@
 
 NAME	=	ismus.filler
 
-FUNC	=	first.c move_to_player.c
-
+FUNC	=	first.c first_figure.c get_free_print.c move_to_player.c block.c
 
 OBJ		=	$(FUNC:.c=.o)
 

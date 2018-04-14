@@ -12,7 +12,25 @@
 
 #include "filler.h"
 
-static int	check(t_map *map, int i, int j)
+static int	check_dot(int x, t_map *map)
+{
+	int n;
+
+	n = 0;
+	while (x < map->fig_x)
+	{
+		while (n < map->fig_n)
+		{
+			if (map->fig[x][n] != '.')
+				return (0);
+			n++;
+		}
+		x++;
+	}
+	return (1);
+}
+
+int			check(t_map *map, int i, int j)
 {
 	int x;
 	int n;
@@ -20,14 +38,20 @@ static int	check(t_map *map, int i, int j)
 
 	x = 0;
 	cross = 0;
-	while (map->map[i + x] != 0 && x < map->fig_x)
+	while (x < map->fig_x && cross <= 1)
 	{
 		n = 0;
-		while (map->map[i + x][j + n] != '\0' && n < map->fig_n)
+		while (n < map->fig_n && cross <= 1)
 		{
-			if (map->fig[x][n] != '.' && map->map[i + x][j + n] == map->nsym)
+			if (map->fig[x][n] == '.')
+				n = n + 0;
+			else if (j + n > map->map_n + 3 || j + n < 4)
 				return (0);
-			if (map->fig[x][n] == '*' && map->map[i + x][j + n] == map->sym)
+			else if (i + x < 1 || i + x > map->map_x)
+				return (0);
+			else if (map->map[i + x][j + n] != '.' && map->map[i + x][j + n] != map->sym + 32 && map->map[i + x][j + n] != map->sym)
+				return (0);
+			else if (map->fig[x][n] == '*' && (map->map[i + x][j + n] == map->sym || map->map[i + x][j + n] == map->sym + 32))
 				cross++;
 			n++;
 		}
@@ -36,7 +60,11 @@ static int	check(t_map *map, int i, int j)
 		x++;
 	}
 	if (x < map->fig_x && map->map[i + x] == 0)
+	{
+		if (check_dot(x, map) == 1 && cross == 1)
+			return (1);
 		return (0);
+	}
 	return (cross != 1 ? 0 : 1);
 }
 

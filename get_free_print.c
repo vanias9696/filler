@@ -58,20 +58,14 @@ void		adr_xn(t_map *map)
 			z = adr_n(map, i);
 		i++;
 	}
-	map->nnadrN = map->nadrN;
-	map->nnadrX = map->nadrX;
+	map->where_x = map->adrX > map->nadrX ? -1 : 1;
 }
 
 int			get_map_fig(t_map *map)
 {
 	char	*line;
 	int		i;
-	int		k;
 
-	get_next_line(0, &line);
-	map->map_x = ft_atoi(line + 8);
-	map->map_n = ft_atoi(line + 9 + len_num(map->map_x));
-	free(line);
 	i = -1;
 	map->map = (char **)malloc(sizeof(map->map) * (map->map_x + 2));
 	map->map[map->map_x + 1] = 0;
@@ -80,30 +74,36 @@ int			get_map_fig(t_map *map)
 	get_next_line(0, &line);
 	map->fig_x = ft_atoi(line + 6);
 	map->fig_n = ft_atoi(line + 7 + len_num(map->fig_x));
-	free(line);
+	//free(line);
 	map->fig = (char **)malloc(sizeof(map->fig) * (map->fig_x + 1));
 	map->fig[map->fig_x] = 0;
 	i = 0;
 	while (i < map->fig_x)
 	{
-		k = get_next_line(0, &(map->fig[i]));
+		get_next_line(0, &(map->fig[i]));
 		i++;
 	}
-	return (k);
+	return (1);
 }
 
-void		free_map_fig(char **map, char **fig)
+void		free_map_fig(t_map *map)
 {
 	int i;
 
 	i = -1;
-	while (map[++i] != 0)
-		free(map[i]);
-	free(map);
-	i = -1;
-	while (fig[++i] != 0)
-		free(fig[i]);
-	free(fig);
+	if (map->map != 0)
+	{
+		while (map->map[++i] != 0)
+			free(map->map[i]);
+		free(map->map);
+	}
+	if (map->fig != 0)
+	{
+		i = -1;
+		while (map->fig[++i] != 0)
+			free(map->fig[i]);
+		free(map->fig);
+	}
 }
 
 void		output_pr(int x, int y, int fd)
