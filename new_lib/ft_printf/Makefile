@@ -17,7 +17,9 @@ FUNC	=	ft_printf.c data_type.c unicode.c one_two_byte.c three_byte.c	\
 			type_s.c acc_bytes.c modif_p.c ft_n_and_s.c type_c.c			\
 			all_param.c flags_oux.c modif_t.c flags_mid.c type_s0.c
 
-OBJ		=	$(FUNC:.c=.o)
+OBJS	=	./
+
+OBJ		=	$(addprefix $(OBJS), $(FUNC:.c=.o))
 
 FLAGS	=	-Wall -Wextra -Werror
 
@@ -29,12 +31,15 @@ $(NAME): $(OBJ)
 	@$(CC) $(FLAGS) -c $(FUNC)
 	@ar rc $(NAME) $(OBJ)
 
+$(OBJS)/%.o : %.c
+	@$(CC) $(FLAGS) -c $< -o $@
+
 clean:
-	rm -f $(OBJ)
-	rm -f libft/obj/*.o
+	@rm -f $(OBJ)
+	@rm -f libft/obj/*.o
 
 fclean: clean
-	rm -f $(NAME)
-	rm -f libft/libft.a
+	@rm -f $(NAME)
+	@rm -f libft/libft.a
 
 re: fclean all

@@ -25,17 +25,16 @@ static int	have_sym(int i, t_map *map)
 		{
 			if (x <= map->map_x && x > 0 && n > 3 && n < map->map_n + 4 &&
 				(map->map[x][n] == map->sym || map->map[x][n] == map->sym + 32))
-				break;
+				break ;
 			n++;
 		}
 		if (n != map->last_n + i + 1)
-			break;
+			break ;
 		x++;
 	}
 	map->block_x = x;
 	map->block_n = n;
 	return (x <= map->last_x + i ? 1 : 0);
-
 }
 
 static int	case_a(t_map *map)
@@ -48,19 +47,19 @@ static int	case_a(t_map *map)
 	while (x <= map->block_x)
 	{
 		n = map->block_n;
-		while(n >= map->block_n - map->fig_n - 1)
+		while (n >= map->block_n - map->fig_n - 1)
 		{
 			ch = check(map, x, n);
 			if (ch == 1)
-				break;
+				break ;
 			n--;
 		}
 		if (ch == 1)
-			break;
+			break ;
 		x++;
 	}
 	if (ch == 1)
-		output_pr(x - 1, n - 4, 1);
+		output_pr(x - 1, n - 4, 1, map);
 	return (ch == 1 ? 1 : 0);
 }
 
@@ -74,21 +73,21 @@ static int	case_b(t_map *map)
 	while (x <= map->block_x)
 	{
 		n = map->block_n - map->fig_n - 1;
-		while(n <= map->block_n)
+		while (n <= map->block_n)
 		{
 			ch = check(map, x, n);
 			if (ch == 1)
-				break;
+				break ;
 			else
 				n++;
 		}
 		if (ch == 1)
-			break;
+			break ;
 		else
 			x++;
 	}
 	if (ch == 1)
-		output_pr(x - 1, n - 4, 1);
+		output_pr(x - 1, n - 4, 1, map);
 	return (ch == 1 ? 1 : 0);
 }
 
@@ -102,19 +101,19 @@ static int	case_c(t_map *map)
 	while (x >= map->block_x - map->fig_x + 1)
 	{
 		n = map->block_n + 2;
-		while(n >= map->block_n - map->fig_n + 1)
+		while (n >= map->block_n - map->fig_n + 1)
 		{
 			ch = check(map, x, n);
 			if (ch == 1)
-				break;
+				break ;
 			n--;
 		}
 		if (ch == 1)
-			break;
+			break ;
 		x--;
 	}
 	if (ch == 1)
-		output_pr(x - 1, n - 4, 1);
+		output_pr(x - 1, n - 4, 1, map);
 	return (ch == 1 ? 1 : 0);
 }
 
@@ -128,23 +127,23 @@ static int	case_d(t_map *map)
 	while (x >= map->block_x - map->fig_x + 1)
 	{
 		n = map->block_n - map->fig_n - 1;
-		while(n <= map->block_n)
+		while (n <= map->block_n)
 		{
 			ch = check(map, x, n);
 			if (ch == 1)
-				break;
+				break ;
 			n++;
 		}
 		if (ch == 1)
-			break;
+			break ;
 		x--;
 	}
 	if (ch == 1)
-		output_pr(x - 1, n - 4, 1);
+		output_pr(x - 1, n - 4, 1, map);
 	return (ch == 1 ? 1 : 0);
 }
 
-int		find_wall(t_map *map, int n)
+int			find_wall(t_map *map, int n)
 {
 	int i;
 
@@ -161,41 +160,34 @@ int		find_wall(t_map *map, int n)
 	return (0);
 }
 
+int			where_i(t_map *map)
+{
+	if (map->nadrX < map->adrX && map->block_x <= map->last_x)
+		return (1);
+	else if (map->nadrX > map->adrX && map->block_x >= map->last_x)
+		return (1);
+	return (0);
+}
+
 int			try_block_up(t_map *map)
 {
 	int i;
 
 	i = 1;
-
 	while (have_sym(i, map) == 0 && i < map->map_n)
 		i++;
 	if (i == map->map_n)
 		return (0);
-	printf("block wide\n");
-	printf("%i %i\n", map->last_x, map->last_n);
-	if (i < 3 && wide_block(map) == 1)
+	if (where_i(map) == 1 && wide_block(map) == 1)
 		return (1);
-	printf("cases\n");
 	if (map->block_x > map->last_x && map->block_n < map->last_n)
-	{
-		printf("case a\n");
 		i = case_a(map);
-	}
 	else if (map->block_x > map->last_x)
-	{
-		printf("case b\n");
 		i = case_b(map);
-	}
 	else if (map->block_n < map->last_n)
-	{
-		printf("case c\n");
 		i = case_c(map);
-	}
 	else
-	{
-		printf("case d\n");
 		i = case_d(map);
-	}
 	return (i == 0 ? 0 : 1);
 }
 
@@ -206,23 +198,22 @@ static int	break_up(t_map *map, int x)
 	int ch;
 
 	k = map->where_x == -1 ? x - map->fig_x + 1 : x;
-	//printf("%i\n", k);
-	while(k >= x - map->fig_x + 1 && k <= x)
+	while (k >= x - map->fig_x + 1 && k <= x)
 	{
 		n = 4 - map->fig_n;
-		while(n < map->map_n + map->fig_n)
+		while (n < map->map_n + map->fig_n)
 		{
 			ch = check(map, k, n);
 			if (ch == 1)
-				break;
+				break ;
 			n++;
 		}
 		if (ch == 1)
-			break;
+			break ;
 		k = k + map->where_x;
 	}
 	if (ch == 1)
-		output_pr(k - 1, n - 4, 1);
+		output_pr(k - 1, n - 4, 1, map);
 	return (ch == 1 ? 1 : 0);
 }
 
@@ -236,13 +227,11 @@ int			joint_symb(t_map *map)
 	x = nx;
 	while (ft_while_not_n(map->map[nx], map->nsym) < 2)
 		nx = nx - map->where_x;
-	while (ft_while_not_n(map->map[x], map->sym + 32) < 2 && ft_while_not_n(map->map[x], map->sym) < 2)
+	while (ft_while_not_n(map->map[x], map->sym + 32) < 2 &&
+		ft_while_not_n(map->map[x], map->sym) < 2)
 		x = x - map->where_x;
 	a = map->where_x == -1 ? x - nx : nx - x;
 	if (a > 0 && a <= map->fig_x + 1)
 		return (break_up(map, x));
 	return (0);
 }
-
-
-

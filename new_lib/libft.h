@@ -17,7 +17,6 @@
 # include <string.h>
 # include "ft_printf/ft_printf.h"
 # define BUFF_SIZE 50000
-//# include "get_next_line.h"
 
 typedef struct		s_list
 {
@@ -277,5 +276,8 @@ char				*ft_itoa_base(intmax_t n, int base);
 char				*ft_utoa_base(uintmax_t n, int base);
 int					get_next_line(const int fd, char **line);
 int					len_num(int n);
+int					ft_rev_while_not_n(char *str, char n);
+char				*joinfree(char *s1, char *s2, int n);
+char				*ft_nstrncpy(char *str1, const char *str2);
 
 #endif

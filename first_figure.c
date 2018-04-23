@@ -49,9 +49,13 @@ int			check(t_map *map, int i, int j)
 				return (0);
 			else if (i + x < 1 || i + x > map->map_x)
 				return (0);
-			else if (map->map[i + x][j + n] != '.' && map->map[i + x][j + n] != map->sym + 32 && map->map[i + x][j + n] != map->sym)
+			else if (map->map[i + x][j + n] != '.' &&
+				map->map[i + x][j + n] != map->sym + 32
+				&& map->map[i + x][j + n] != map->sym)
 				return (0);
-			else if (map->fig[x][n] == '*' && (map->map[i + x][j + n] == map->sym || map->map[i + x][j + n] == map->sym + 32))
+			else if (map->fig[x][n] == '*' &&
+				(map->map[i + x][j + n] == map->sym
+				|| map->map[i + x][j + n] == map->sym + 32))
 				cross++;
 			n++;
 		}
@@ -91,7 +95,7 @@ static void	chek_subst(t_map *map, int where_x, int where_n)
 		if (norm == 0)
 			i = i - where_x;
 	}
-	output_pr(map->adrX + i - 1, map->adrN + j - 4, 1);
+	output_pr(map->adrX + i - 1, map->adrN + j - 4, 1, map);
 }
 
 void		first_fig(t_map *map)

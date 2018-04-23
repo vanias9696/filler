@@ -74,7 +74,7 @@ int			get_map_fig(t_map *map)
 	get_next_line(0, &line);
 	map->fig_x = ft_atoi(line + 6);
 	map->fig_n = ft_atoi(line + 7 + len_num(map->fig_x));
-	//free(line);
+	free(line);
 	map->fig = (char **)malloc(sizeof(map->fig) * (map->fig_x + 1));
 	map->fig[map->fig_x] = 0;
 	i = 0;
@@ -106,8 +106,17 @@ void		free_map_fig(t_map *map)
 	}
 }
 
-void		output_pr(int x, int y, int fd)
+void		output_pr(int x, int y, int fd, t_map *map)
 {
+	if (map->inv == 1)
+	{
+		x = map->map_x - x - map->fig_x;
+		y = map->map_n - y - map->fig_n;
+		map->adrX = map->map_x - map->adrX;
+		map->adrN = map->map_n + 7 - map->adrN;
+		map->nadrX = map->map_x - map->nadrX;
+		map->nadrN = map->map_n + 7 - map->nadrN;
+	}
 	ft_putnbr_fd(x, fd);
 	write(1, " ", fd);
 	ft_putnbr_fd(y, fd);
