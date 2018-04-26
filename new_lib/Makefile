@@ -26,7 +26,7 @@ FUNC	=	ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c	\
 			ft_lstdel.c	ft_lstadd.c ft_lstiter.c ft_lstmap.c ft_by_n.c			\
 			ft_copy_unt.c ft_del_first_n.c ft_while_not_n.c ft_strcjoin.c		\
 			ft_itoa_base.c ft_utoa_base.c get_next_line.c len_num.c 			\
-			ft_rev_while_not_n.c joinfree.c ft_nstrncpy.c
+			ft_rev_while_not_n.c joinfree.c ft_nstrncpy.c ft_while_n_block.c
 
 OBJDIR	=	obj
 

@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "filler.h"
+#include "libft.h"
 
-int		ft_while_n_block(char *str, char n, char c)
+int		ft_while_nbl(char *str, char n, char c)
 {
 	int	i;
 
@@ -24,7 +24,7 @@ int		ft_while_n_block(char *str, char n, char c)
 	return (i);
 }
 
-int		ft_rev_while_n_block(char *str, char n, char c, char m)
+int		ft_rwhile_nbl(char *str, char n, char c, char m)
 {
 	int	i;
 

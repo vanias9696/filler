@@ -19,16 +19,16 @@ static int	adr_n(t_map *map, int i)
 	z = ft_while_not_n(map->map[i], map->nsym);
 	if (z > -1)
 	{
-		map->nadrX = i;
-		map->nadrN = z;
+		map->nadrx = i;
+		map->nadrn = z;
 	}
 	else
 	{
 		z = ft_while_not_n(map->map[i], map->nsym + 32);
 		if (z > -1)
 		{
-			map->nadrX = i;
-			map->nadrN = z;
+			map->nadrx = i;
+			map->nadrn = z;
 		}
 	}
 	return (z);
@@ -50,15 +50,15 @@ void		adr_xn(t_map *map)
 			k = ft_while_not_n(map->map[i], map->sym);
 			if (k >= 0)
 			{
-				map->adrX = i;
-				map->adrN = k;
+				map->adrx = i;
+				map->adrn = k;
 			}
 		}
 		if (z == -1)
 			z = adr_n(map, i);
 		i++;
 	}
-	map->where_x = map->adrX > map->nadrX ? -1 : 1;
+	map->where_x = map->adrx > map->nadrx ? -1 : 1;
 }
 
 int			get_map_fig(t_map *map)
@@ -106,19 +106,20 @@ void		free_map_fig(t_map *map)
 	}
 }
 
-void		output_pr(int x, int y, int fd, t_map *map)
+int			output_pr(int x, int y, int fd, t_map *map)
 {
 	if (map->inv == 1)
 	{
 		x = map->map_x - x - map->fig_x;
 		y = map->map_n - y - map->fig_n;
-		map->adrX = map->map_x - map->adrX;
-		map->adrN = map->map_n + 7 - map->adrN;
-		map->nadrX = map->map_x - map->nadrX;
-		map->nadrN = map->map_n + 7 - map->nadrN;
+		map->adrx = map->map_x - map->adrx;
+		map->adrn = map->map_n + 7 - map->adrn;
+		map->nadrx = map->map_x - map->nadrx;
+		map->nadrn = map->map_n + 7 - map->nadrn;
 	}
 	ft_putnbr_fd(x, fd);
 	write(1, " ", fd);
 	ft_putnbr_fd(y, fd);
 	write(1, "\n", fd);
+	return (1);
 }

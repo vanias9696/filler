@@ -279,5 +279,7 @@ int					len_num(int n);
 int					ft_rev_while_not_n(char *str, char n);
 char				*joinfree(char *s1, char *s2, int n);
 char				*ft_nstrncpy(char *str1, const char *str2);
+int					ft_while_nbl(char *str, char n, char c);
+int					ft_rwhile_nbl(char *str, char n, char c, char m);
 
 #endif

@@ -18,7 +18,7 @@ void	change_sym(char *line, char *p1, char *p2, int i)
 		read(1, 0, 1);
 	i = 0;
 	system("clear");
-	ft_printf("%s\n%s\n\n ", p1, p2);
+	ft_printf("\x1b[1;33m%s\n\x1b[0;32m%s\x1b[1;37m\n\n ", p1, p2);
 	while (line[i] != '\0')
 	{
 		while ((line[i] <= '9' && line[i] >= '0') ||
@@ -103,7 +103,8 @@ void	who_win(char *str1, char *p1, char *p2)
 	get_next_line(0, &str1);
 	two = ft_atoi(str1 + 10);
 	free(str1);
-	ft_printf("Player 🏠 : %i\nPlayer 🌲 : %i\n", one, two);
+	ft_printf("\x1b[1;33mPlayer 🏠 : %i\n\x1b[0;32mPlayer 🌲 : %i", one, two);
+	ft_printf("\x1b[1;37m\n");
 	if (one > two)
 		str1 = p1;
 	else if (one < two)
@@ -120,23 +121,20 @@ int		main(int argc, char **argv)
 	char	*p2;
 	int		p;
 
+	p1 = check_data(argc, argv);
+	if (p1 == 0)
+		return (0);
 	p = 0;
 	if (argc == 2 && ft_strcmp("enter\0", argv[1]) == 0)
 		p = 1;
 	else if (argc == 2 && ft_strcmp("result\0", argv[1]) == 0)
 		p = 2;
-	else if (argc == 2)
-		return (ft_printf("invalid input\n"));
-	while (get_next_line(0, &line) && line[0] != '$')
-		free(line);
-	p1 = ft_strjoin("Player 🏠 : ", line + 14);
-	free(line);
 	get_next_line(0, &line);
 	free(line);
 	get_next_line(0, &line);
 	p2 = ft_strjoin("Player 🌲 : ", line + 14);
 	free(line);
-	while(p == 2 && get_next_line(0, &line) && ft_strncmp("== \0", line, 3) != 0)
+	while (p == 2 && get_next_line(0, &line) && ft_strncmp("== ", line, 3) != 0)
 		free(line);
 	if (p != 2)
 		line = print_map(line, p1, p2, p);

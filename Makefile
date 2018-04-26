@@ -12,7 +12,8 @@
 
 NAME	=	ismus.filler
 
-FUNC	=	first.c first_figure.c get_free_print.c move_to_player.c block.c try_block_hor.c ft_while_n_block.c
+FUNC	=	first.c get_free_print.c move_to_player.c block.c try_block_hor.c check.c \
+			try_block_up.c wide_block.c main_check.c 
 
 OBJ		=	$(FUNC:.c=.o)
 
@@ -33,7 +34,7 @@ $(OBJ): %.o : %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 vis:
-	@$(CC) $(CFLAGS) visual.c -I/new_lib/libft.h new_lib/libft.a -o Visual
+	@$(CC) $(CFLAGS) visual.c vis.c -I/new_lib/libft.h new_lib/libft.a -o Visual
 	@echo "\x1B[0;32mvisual effect is ready!"
 
 cvis:
